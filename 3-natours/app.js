@@ -3,6 +3,9 @@ const express = require('express');
 
 const app = express();
 
+// here express.json() is middleware
+app.use(express.json());
+
 // app.get('/', (req, res) => {
 //   // res.status(200).send('Hello from the server side!');
 //   res
@@ -24,9 +27,34 @@ app.get('/api/v1/tours', (req, res) => {
     results: tours.length,
     status: 'success',
     data: {
-      tours
+      tours,
+    },
+  });
+});
+
+app.post('/api/v1/tours', (req, res) => {
+  // body is the property that is gonna be available on the request because we used that middleware.
+  // console.log(req.body);
+
+  const newId = tours[tours.length - 1].id + 1;
+
+  // object.assign- which basically allows us to create a new object by merging two existing objects together.
+  const newTour = Object.assign({ id: newId }, req.body);
+
+  tours.push(newTour);
+
+  fs.writeFile(
+    `${__dirname}/dev-data/data/tours-simple.json`,
+    JSON.stringify(tours),
+    (err) => {
+      res.status(201).json({
+        status: 'success',
+        data: {
+          tour: newTour,
+        },
+      });
     }
-  })
+  );
 });
 
 const port = 3000;
