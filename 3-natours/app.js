@@ -32,6 +32,28 @@ app.get('/api/v1/tours', (req, res) => {
   });
 });
 
+// Here after adding "?" it become optional route.  '/api/v1/tours/:id/:x/:y?'
+app.get('/api/v1/tours/:id', (req, res) => {
+  console.log(req.params);
+  const id = req.params.id * 1; /*Here we change string number(such as '2') to number*/
+  const tour = tours.find(el => el.id === id);
+
+  if (!tour) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID'
+    });
+  }
+
+  res.status(200).json({
+    // results: tours.length,
+    status: 'success',
+    data: {
+      tour
+    }
+  });
+});
+
 app.post('/api/v1/tours', (req, res) => {
   // body is the property that is gonna be available on the request because we used that middleware.
   // console.log(req.body);
