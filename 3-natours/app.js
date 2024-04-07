@@ -35,13 +35,14 @@ app.get('/api/v1/tours', (req, res) => {
 // Here after adding "?" it become optional route.  '/api/v1/tours/:id/:x/:y?'
 app.get('/api/v1/tours/:id', (req, res) => {
   console.log(req.params);
-  const id = req.params.id * 1; /*Here we change string number(such as '2') to number*/
-  const tour = tours.find(el => el.id === id);
+  const id =
+    req.params.id * 1; /*Here we change string number(such as '2') to number*/
+  const tour = tours.find((el) => el.id === id);
 
   if (!tour) {
     return res.status(404).json({
       status: 'fail',
-      message: 'Invalid ID'
+      message: 'Invalid ID',
     });
   }
 
@@ -49,8 +50,8 @@ app.get('/api/v1/tours/:id', (req, res) => {
     // results: tours.length,
     status: 'success',
     data: {
-      tour
-    }
+      tour,
+    },
   });
 });
 
@@ -80,20 +81,36 @@ app.post('/api/v1/tours', (req, res) => {
 });
 
 app.patch('/api/v1/tours/:id', (req, res) => {
-  if (req.params.id*1 > tours.length) {
+  if (req.params.id * 1 > tours.length) {
     return res.status(404).json({
       status: 'fail',
-      message: 'Invalid ID'
+      message: 'Invalid ID',
     });
   }
 
   res.status(200).json({
     status: 'success',
     data: {
-      tour: '<Updated tour here....>'
-    }
-  })
-})
+      tour: '<Updated tour here....>',
+    },
+  });
+});
+
+
+app.delete('/api/v1/tours/:id', (req, res) => {
+  if (req.params.id * 1 > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+
+  // 204 mean no content
+  res.status(204).json({
+    status: 'success',
+    data: null
+  });
+});
 
 const port = 3000;
 app.listen(port, () => {
