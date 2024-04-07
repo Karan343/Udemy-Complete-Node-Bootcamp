@@ -6,34 +6,21 @@ const app = express();
 // here express.json() is middleware
 app.use(express.json());
 
-// app.get('/', (req, res) => {
-//   // res.status(200).send('Hello from the server side!');
-//   res
-//     .status(200)
-//     .json({ message: 'Hello from the server side', app: 'Natours' });
-// });
-
-// app.post('/', (req, res) => {
-//   res.send('you can post to this endpoint....');
-// });
-
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
-// v1 is version of api
-app.get('/api/v1/tours', (req, res) => {
+const getAllTours = (req, res) => {
   res.status(200).json({
-    results: tours.length,
     status: 'success',
+    result: tours.length,
     data: {
       tours,
     },
   });
-});
+};
 
-// Here after adding "?" it become optional route.  '/api/v1/tours/:id/:x/:y?'
-app.get('/api/v1/tours/:id', (req, res) => {
+const getTour = (req, res) => {
   console.log(req.params);
   const id =
     req.params.id * 1; /*Here we change string number(such as '2') to number*/
@@ -53,9 +40,9 @@ app.get('/api/v1/tours/:id', (req, res) => {
       tour,
     },
   });
-});
+};
 
-app.post('/api/v1/tours', (req, res) => {
+const createTour = (req, res) => {
   // body is the property that is gonna be available on the request because we used that middleware.
   // console.log(req.body);
 
@@ -78,9 +65,9 @@ app.post('/api/v1/tours', (req, res) => {
       });
     }
   );
-});
+};
 
-app.patch('/api/v1/tours/:id', (req, res) => {
+const updatetour = (req, res) => {
   if (req.params.id * 1 > tours.length) {
     return res.status(404).json({
       status: 'fail',
@@ -94,10 +81,9 @@ app.patch('/api/v1/tours/:id', (req, res) => {
       tour: '<Updated tour here....>',
     },
   });
-});
+};
 
-
-app.delete('/api/v1/tours/:id', (req, res) => {
+const deleteTour = (req, res) => {
   if (req.params.id * 1 > tours.length) {
     return res.status(404).json({
       status: 'fail',
@@ -108,9 +94,26 @@ app.delete('/api/v1/tours/:id', (req, res) => {
   // 204 mean no content
   res.status(204).json({
     status: 'success',
-    data: null
+    data: null,
   });
-});
+};
+
+// v1 is version of api
+// Here after adding "?" it become optional route.  '/api/v1/tours/:id/:x/:y?'
+
+app.get('/api/v1/tours', getAllTours);
+app.post('/api/v1/tours', createTour);
+app.get('/api/v1/tours/:id', getTour);
+app.patch('/api/v1/tours/:id', updatetour);
+app.delete('/api/v1/tours/:id', deleteTour);
+
+app.route('/api/v1/tours').get(getAllTours).post(createTour);
+
+app
+  .route('/api/v1/tours/:id')
+  .get(getTour)
+  .patch(updatetour)
+  .delete(deleteTour);
 
 const port = 3000;
 app.listen(port, () => {
