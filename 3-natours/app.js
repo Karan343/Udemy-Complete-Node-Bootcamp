@@ -114,17 +114,52 @@ const deleteTour = (req, res) => {
   });
 };
 
+const getAllUsers = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined!',
+  });
+};
+
+const getUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined!',
+  });
+};
+
+const createUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined!',
+  });
+};
+
+const updateUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined!',
+  });
+};
+
+const deleteUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined!',
+  });
+};
+
 // v1 is version of api
 // Here after adding "?" it become optional route.  '/api/v1/tours/:id/:x/:y?'
 
 // 3) Routes
-app.get('/api/v1/tours', getAllTours);
-app.post('/api/v1/tours', createTour);
-app.get('/api/v1/tours/:id', getTour);
-app.patch('/api/v1/tours/:id', updatetour);
-app.delete('/api/v1/tours/:id', deleteTour);
+// app.get('/api/v1/tours', getAllTours);
+// app.post('/api/v1/tours', createTour);
+// app.get('/api/v1/tours/:id', getTour);
+// app.patch('/api/v1/tours/:id', updatetour);
+// app.delete('/api/v1/tours/:id', deleteTour);
 
-app.route('/api/v1/tours').get(getAllTours).post(createTour);
+app.route('/api/v1/tours/').get(getAllTours).post(createTour);
 
 app
   .route('/api/v1/tours/:id')
@@ -132,8 +167,15 @@ app
   .patch(updatetour)
   .delete(deleteTour);
 
+app.route('/api/v1/users').get(getAllUsers).post(createUser);
 
-// Start Server 
+app
+  .route('/api/v1/users/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
+
+// Start Server
 const port = 3000;
 app.listen(port, () => {
   console.log(`App running on port ${port}....`);
