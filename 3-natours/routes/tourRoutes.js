@@ -3,8 +3,17 @@ const tourController = require('./../controllers/tourController');
 
 const router = express.Router(); /* express.Router return a middleware*/
 
-router.route('/').get(tourController.getAllTours).post(tourController.createTour);
+router.param('id', tourController.checkID);
 
-router.route('/:id').get(tourController.getTour).patch(tourController.updatetour).delete(tourController.deleteTour);
+router
+  .route('/')
+  .get(tourController.getAllTours)
+  .post(tourController.createTour);
+
+router
+  .route('/:id')
+  .get(tourController.getTour)
+  .patch(tourController.updatetour)
+  .delete(tourController.deleteTour);
 
 module.exports = router;
